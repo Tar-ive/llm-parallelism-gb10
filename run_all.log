@@ -1,0 +1,405 @@
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[01_fp32_bs1] params=494M world=1 tokens/step=1024
+  step   0 loss=1.922   1219ms     840 tok/s   2.49 TFLOPS ( 8.0% peak)
+  step   5 loss=3.396    624ms    1641 tok/s   4.86 TFLOPS (15.7% peak)
+  step  10 loss=1.472    625ms    1637 tok/s   4.85 TFLOPS (15.7% peak)
+  step  15 loss=1.103    626ms    1636 tok/s   4.85 TFLOPS (15.6% peak)
+  step  20 loss=3.075    627ms    1633 tok/s   4.84 TFLOPS (15.6% peak)
+  step  25 loss=1.200    630ms    1625 tok/s   4.82 TFLOPS (15.5% peak)
+  step  30 loss=2.852    628ms    1631 tok/s   4.84 TFLOPS (15.6% peak)
+{
+  "tag": "01_fp32_bs1",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "fp32",
+  "batch_size": 1,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 627.4,
+  "tokens_per_s": 1632,
+  "tflops": 4.84,
+  "mfu_pct": 15.61,
+  "peak_tflops_assumed": 31.0,
+  "util_gpu_pct_mean": 72.0,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 48.2,
+  "power_w_max": 66.5,
+  "sm_clock_mhz_mean": 2455.6,
+  "sm_clock_mhz_max": 2515.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[02_tf32_bs1] params=494M world=1 tokens/step=1024
+  step   0 loss=1.922   1146ms     894 tok/s   2.65 TFLOPS ( 4.3% peak)
+  step   5 loss=3.397    503ms    2036 tok/s   6.03 TFLOPS ( 9.7% peak)
+  step  10 loss=1.472    504ms    2031 tok/s   6.02 TFLOPS ( 9.7% peak)
+  step  15 loss=1.103    504ms    2030 tok/s   6.02 TFLOPS ( 9.7% peak)
+  step  20 loss=3.075    505ms    2029 tok/s   6.01 TFLOPS ( 9.7% peak)
+  step  25 loss=1.200    505ms    2028 tok/s   6.01 TFLOPS ( 9.7% peak)
+  step  30 loss=2.852    504ms    2030 tok/s   6.02 TFLOPS ( 9.7% peak)
+{
+  "tag": "02_tf32_bs1",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "tf32",
+  "batch_size": 1,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 504.2,
+  "tokens_per_s": 2031,
+  "tflops": 6.02,
+  "mfu_pct": 9.71,
+  "peak_tflops_assumed": 62.0,
+  "util_gpu_pct_mean": 67.9,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 33.0,
+  "power_w_max": 42.2,
+  "sm_clock_mhz_mean": 2476.8,
+  "sm_clock_mhz_max": 2515.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[03_bf16_bs1] params=494M world=1 tokens/step=1024
+  step   0 loss=1.924   1192ms     859 tok/s   2.55 TFLOPS ( 2.0% peak)
+  step   5 loss=3.418    346ms    2957 tok/s   8.76 TFLOPS ( 7.0% peak)
+  step  10 loss=1.477    346ms    2960 tok/s   8.77 TFLOPS ( 7.0% peak)
+  step  15 loss=1.105    349ms    2938 tok/s   8.71 TFLOPS ( 7.0% peak)
+  step  20 loss=3.074    349ms    2938 tok/s   8.71 TFLOPS ( 7.0% peak)
+  step  25 loss=1.200    348ms    2939 tok/s   8.71 TFLOPS ( 7.0% peak)
+  step  30 loss=2.850    347ms    2950 tok/s   8.74 TFLOPS ( 7.0% peak)
+{
+  "tag": "03_bf16_bs1",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "bf16",
+  "batch_size": 1,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 348.7,
+  "tokens_per_s": 2937,
+  "tflops": 8.71,
+  "mfu_pct": 6.96,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 60.6,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 27.6,
+  "power_w_max": 37.9,
+  "sm_clock_mhz_mean": 2478.3,
+  "sm_clock_mhz_max": 2522.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[04_bf16_bs8] params=494M world=1 tokens/step=8192
+  step   0 loss=1.924   2938ms    2788 tok/s   8.26 TFLOPS ( 6.6% peak)
+  step   5 loss=3.415   1510ms    5426 tok/s  16.08 TFLOPS (12.9% peak)
+  step  10 loss=1.477   1350ms    6069 tok/s  17.99 TFLOPS (14.4% peak)
+  step  15 loss=1.106   1349ms    6074 tok/s  18.00 TFLOPS (14.4% peak)
+  step  20 loss=3.074   1356ms    6039 tok/s  17.90 TFLOPS (14.3% peak)
+  step  25 loss=1.201   1354ms    6050 tok/s  17.93 TFLOPS (14.3% peak)
+  step  30 loss=2.851   1353ms    6055 tok/s  17.95 TFLOPS (14.4% peak)
+{
+  "tag": "04_bf16_bs8",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "bf16",
+  "batch_size": 8,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 1367.9,
+  "tokens_per_s": 5989,
+  "tflops": 17.75,
+  "mfu_pct": 14.2,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 82.2,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 42.2,
+  "power_w_max": 51.6,
+  "sm_clock_mhz_mean": 2489.3,
+  "sm_clock_mhz_max": 2528.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[05_bf16_bs8_ga4] params=494M world=1 tokens/step=32768
+  step   0 loss=3.525   6377ms    5139 tok/s  15.23 TFLOPS (12.2% peak)
+  step   5 loss=2.474   4898ms    6690 tok/s  19.83 TFLOPS (15.9% peak)
+  step  10 loss=2.611   4911ms    6673 tok/s  19.78 TFLOPS (15.8% peak)
+{
+  "tag": "05_bf16_bs8_ga4",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "bf16",
+  "batch_size": 8,
+  "seq_len": 1024,
+  "grad_accum": 4,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 4906.5,
+  "tokens_per_s": 6678,
+  "tflops": 19.8,
+  "mfu_pct": 15.84,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 86.4,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 46.7,
+  "power_w_max": 56.6,
+  "sm_clock_mhz_mean": 2476.9,
+  "sm_clock_mhz_max": 2509.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[06_bf16_bs8_ckpt] params=494M world=1 tokens/step=8192
+  step   0 loss=1.924   3006ms    2725 tok/s  10.77 TFLOPS ( 8.6% peak)
+  step   5 loss=3.417   1436ms    5705 tok/s  22.55 TFLOPS (18.0% peak)
+  step  10 loss=1.476   1435ms    5709 tok/s  22.56 TFLOPS (18.1% peak)
+  step  15 loss=1.105   1443ms    5675 tok/s  22.43 TFLOPS (17.9% peak)
+  step  20 loss=3.075   1444ms    5673 tok/s  22.42 TFLOPS (17.9% peak)
+  step  25 loss=1.200   1446ms    5665 tok/s  22.39 TFLOPS (17.9% peak)
+  step  30 loss=2.851   1441ms    5686 tok/s  22.47 TFLOPS (18.0% peak)
+{
+  "tag": "06_bf16_bs8_ckpt",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "bf16",
+  "batch_size": 8,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": true,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 1441.7,
+  "tokens_per_s": 5682,
+  "tflops": 22.46,
+  "mfu_pct": 17.97,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 83.1,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 45.9,
+  "power_w_max": 54.8,
+  "sm_clock_mhz_mean": 2471.7,
+  "sm_clock_mhz_max": 2502.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[07_bf16_bs8_compile] params=494M world=1 tokens/step=8192
+/root/miniconda3/lib/python3.13/site-packages/torch/_inductor/compile_fx.py:322: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+  warnings.warn(
+W0706 00:29:51.388000 1314918 site-packages/torch/_inductor/utils.py:1731] [0/0] Not enough SMs to use max_autotune_gemm mode
+  step   0 loss=1.923  26089ms     314 tok/s   0.93 TFLOPS ( 0.7% peak)
+  step   5 loss=3.417    830ms    9869 tok/s  29.25 TFLOPS (23.4% peak)
+  step  10 loss=1.476    832ms    9844 tok/s  29.18 TFLOPS (23.3% peak)
+  step  15 loss=1.107    835ms    9814 tok/s  29.09 TFLOPS (23.3% peak)
+  step  20 loss=3.072    834ms    9822 tok/s  29.12 TFLOPS (23.3% peak)
+  step  25 loss=1.200    832ms    9849 tok/s  29.19 TFLOPS (23.4% peak)
+  step  30 loss=2.851    833ms    9830 tok/s  29.14 TFLOPS (23.3% peak)
+{
+  "tag": "07_bf16_bs8_compile",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "single",
+  "precision": "bf16",
+  "batch_size": 8,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": true,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 833.0,
+  "tokens_per_s": 9834,
+  "tflops": 29.15,
+  "mfu_pct": 23.32,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 51.5,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 39.1,
+  "power_w_max": 69.4,
+  "sm_clock_mhz_mean": 2444.3,
+  "sm_clock_mhz_max": 2509.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+W0706 00:30:47.380000 1316006 site-packages/torch/distributed/run.py:851] 
+W0706 00:30:47.380000 1316006 site-packages/torch/distributed/run.py:851] *****************************************
+W0706 00:30:47.380000 1316006 site-packages/torch/distributed/run.py:851] Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+W0706 00:30:47.380000 1316006 site-packages/torch/distributed/run.py:851] *****************************************
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+[08_ddp2_bf16_bs4] params=494M world=2 tokens/step=8192
+  step   0 loss=1.924   4375ms    1872 tok/s   5.55 TFLOPS ( 4.4% peak)
+  step   5 loss=1.508   2387ms    3432 tok/s  10.17 TFLOPS ( 8.1% peak)
+  step  10 loss=3.033   2341ms    3499 tok/s  10.37 TFLOPS ( 8.3% peak)
+  step  15 loss=2.910   2384ms    3436 tok/s  10.19 TFLOPS ( 8.1% peak)
+  step  20 loss=2.180   2485ms    3296 tok/s   9.77 TFLOPS ( 7.8% peak)
+  step  25 loss=2.148   2440ms    3358 tok/s   9.95 TFLOPS ( 8.0% peak)
+  step  30 loss=1.418   2377ms    3446 tok/s  10.22 TFLOPS ( 8.2% peak)
+{
+  "tag": "08_ddp2_bf16_bs4",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "ddp",
+  "precision": "bf16",
+  "batch_size": 4,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 2,
+  "params_m": 494,
+  "step_ms": 2407.4,
+  "tokens_per_s": 3403,
+  "tflops": 10.09,
+  "mfu_pct": 8.07,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 71.0,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 34.0,
+  "power_w_max": 48.4,
+  "sm_clock_mhz_mean": 2471.7,
+  "sm_clock_mhz_max": 2509.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/root/miniconda3/lib/python3.13/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:478: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+  _init_core_state(
+[09_fsdp_bf16_bs8] params=494M world=1 tokens/step=8192
+/root/miniconda3/lib/python3.13/site-packages/torch/autograd/graph.py:869: UserWarning: The AccumulateGrad node's stream does not match the stream of the node that produced the incoming gradient. This may incur unnecessary synchronization and break CUDA graph capture if the AccumulateGrad node's stream is the default stream. This mismatch is caused by an AccumulateGrad node created prior to the current iteration being kept alive. This can happen if the autograd graph is still being kept alive by tensors such as the loss, or if you are using DDP, which will stash a reference to the node. To resolve the mismatch, delete all references to the autograd graph or ensure that DDP initialization is performed under the same stream as subsequent forwards. If the mismatch is intentional, you can use torch.autograd.graph.set_warn_on_accumulate_grad_stream_mismatch(False) to suppress this warning. (Triggered internally at /pytorch/torch/csrc/autograd/input_buffer.cpp:240.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+  step   0 loss=1.924   3462ms    2366 tok/s   7.01 TFLOPS ( 5.6% peak)
+  step   5 loss=3.418   1447ms    5662 tok/s  16.78 TFLOPS (13.4% peak)
+  step  10 loss=1.478   1446ms    5665 tok/s  16.79 TFLOPS (13.4% peak)
+  step  15 loss=1.107   1445ms    5668 tok/s  16.80 TFLOPS (13.4% peak)
+  step  20 loss=3.074   1443ms    5676 tok/s  16.82 TFLOPS (13.5% peak)
+  step  25 loss=1.202   1448ms    5656 tok/s  16.77 TFLOPS (13.4% peak)
+  step  30 loss=2.851   1450ms    5651 tok/s  16.75 TFLOPS (13.4% peak)
+{
+  "tag": "09_fsdp_bf16_bs8",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "fsdp",
+  "precision": "bf16",
+  "batch_size": 8,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": false,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 1444.8,
+  "tokens_per_s": 5670,
+  "tflops": 16.81,
+  "mfu_pct": 13.45,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 81.6,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 41.3,
+  "power_w_max": 51.9,
+  "sm_clock_mhz_mean": 2479.5,
+  "sm_clock_mhz_max": 2509.0
+}
+--- idle gap ---
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/root/miniconda3/lib/python3.13/site-packages/torch/cuda/__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+/root/miniconda3/lib/python3.13/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:478: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+  _init_core_state(
+[10_fsdp_offload] params=494M world=1 tokens/step=8192
+  step   0 loss=1.924   5322ms    1539 tok/s   4.56 TFLOPS ( 3.7% peak)
+  step   5 loss=3.418   1927ms    4252 tok/s  12.60 TFLOPS (10.1% peak)
+  step  10 loss=1.476   1962ms    4174 tok/s  12.37 TFLOPS ( 9.9% peak)
+{
+  "tag": "10_fsdp_offload",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "mode": "fsdp",
+  "precision": "bf16",
+  "batch_size": 8,
+  "seq_len": 1024,
+  "grad_accum": 1,
+  "grad_ckpt": false,
+  "compile": false,
+  "cpu_offload": true,
+  "world_size": 1,
+  "params_m": 494,
+  "step_ms": 1970.0,
+  "tokens_per_s": 4158,
+  "tflops": 12.33,
+  "mfu_pct": 9.86,
+  "peak_tflops_assumed": 125.0,
+  "util_gpu_pct_mean": 56.8,
+  "util_gpu_pct_max": 96.0,
+  "util_mem_pct_mean": 0.0,
+  "util_mem_pct_max": 0.0,
+  "power_w_mean": 29.5,
+  "power_w_max": 50.3,
+  "sm_clock_mhz_mean": 2453.1,
+  "sm_clock_mhz_max": 2509.0
+}
+--- idle gap ---
+tag                     prec       bs   ga   ws  step_ms   tok/s     TFLOPS   MFU%     GPU%avg   W_avg    mem_max  
+-------------------------------------------------------------------------------------------------------------------
+01_fp32_bs1             fp32       1    1    1   627.4     1632      4.84     15.61    72.0      48.2     -        
+02_tf32_bs1             tf32       1    1    1   504.2     2031      6.02     9.71     67.9      33.0     -        
+03_bf16_bs1             bf16       1    1    1   348.7     2937      8.71     6.96     60.6      27.6     -        
+04_bf16_bs8             bf16       8    1    1   1367.9    5989      17.75    14.2     82.2      42.2     -        
+05_bf16_bs8_ga4         bf16       8    4    1   4906.5    6678      19.8     15.84    86.4      46.7     -        
+06_bf16_bs8_ckpt        bf16       8    1    1   1441.7    5682      22.46    17.97    83.1      45.9     -        
+07_bf16_bs8_compile     bf16       8    1    1   833.0     9834      29.15    23.32    51.5      39.1     -        
+08_ddp2_bf16_bs4        bf16       4    1    2   2407.4    3403      10.09    8.07     71.0      34.0     -        
+09_fsdp_bf16_bs8        bf16       8    1    1   1444.8    5670      16.81    13.45    81.6      41.3     -        
+10_fsdp_offload         bf16       8    1    1   1970.0    4158      12.33    9.86     56.8      29.5     -        
