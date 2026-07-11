@@ -1,0 +1,27 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  # NVIDIA DCGM: GPU utilization, clocks, power, temperature, PCIe traffic...
+  - job_name: dcgm
+    scrape_interval: 2s
+    static_configs:
+      - targets: ["dcgm-exporter:9400"]
+
+  # Host metrics + textfile collector. The textfile collector re-exposes the
+  # NCCL Inspector's .prom dumps (nccl_bus_bandwidth_gbs etc.).
+  - job_name: node
+    static_configs:
+      - targets: ["host.docker.internal:9100"]
+
+  # Per-step training metrics pushed by train_experiment.py.
+  - job_name: pushgateway
+    honor_labels: true   # keep the job/tag labels the trainer pushed
+    scrape_interval: 2s
+    static_configs:
+      - targets: ["pushgateway:9091"]

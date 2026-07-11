@@ -1,0 +1,78 @@
+{
+  "uid": "gb10-gpu",
+  "title": "GB10 GPU (DCGM)",
+  "tags": ["gpu", "dcgm"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "5s",
+  "time": { "from": "now-30m", "to": "now" },
+  "panels": [
+    {
+      "id": 1, "type": "timeseries", "title": "GPU utilization %  (SM-busy, what nvtop shows)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "custom": { "fillOpacity": 15 } }, "overrides": [] },
+      "targets": [
+        { "expr": "DCGM_FI_DEV_GPU_UTIL", "legendFormat": "GPU util %", "refId": "A" },
+        { "expr": "DCGM_FI_DEV_MEM_COPY_UTIL", "legendFormat": "mem copy engine %", "refId": "B" }
+      ]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Power draw (W)  \u2014 the honest work signal on GB10",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "watt", "min": 0, "custom": { "fillOpacity": 15 } }, "overrides": [] },
+      "targets": [
+        { "expr": "DCGM_FI_DEV_POWER_USAGE", "legendFormat": "power W", "refId": "A" }
+      ]
+    },
+    {
+      "id": 3, "type": "timeseries", "title": "SM clock (MHz)",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "rotmhz", "custom": { "fillOpacity": 10 } }, "overrides": [] },
+      "targets": [
+        { "expr": "DCGM_FI_DEV_SM_CLOCK", "legendFormat": "SM MHz", "refId": "A" }
+      ]
+    },
+    {
+      "id": 4, "type": "timeseries", "title": "GPU temperature (C)",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "celsius", "custom": { "fillOpacity": 10 } }, "overrides": [] },
+      "targets": [
+        { "expr": "DCGM_FI_DEV_GPU_TEMP", "legendFormat": "temp C", "refId": "A" }
+      ]
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "Energy rate (J/s, derived from cumulative counter)",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "watt", "custom": { "fillOpacity": 10 } }, "overrides": [] },
+      "targets": [
+        { "expr": "rate(DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION[30s]) / 1000", "legendFormat": "avg W over 30s", "refId": "A" }
+      ]
+    },
+    {
+      "id": 6, "type": "timeseries", "title": "Host CPU busy % + load (training data pipeline / gloo allreduce pressure)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "custom": { "fillOpacity": 10 } }, "overrides": [
+        { "matcher": { "id": "byName", "options": "load1" }, "properties": [ { "id": "unit", "value": "short" } ] }
+      ] },
+      "targets": [
+        { "expr": "100 * (1 - avg(rate(node_cpu_seconds_total{mode=\"idle\"}[30s])))", "legendFormat": "CPU busy %", "refId": "A" },
+        { "expr": "node_load1", "legendFormat": "load1", "refId": "B" }
+      ]
+    },
+    {
+      "id": 7, "type": "timeseries", "title": "Host memory used (GiB) \u2014 unified memory: this is also GPU memory",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "decgbytes", "min": 0, "custom": { "fillOpacity": 10 } }, "overrides": [] },
+      "targets": [
+        { "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 2^30", "legendFormat": "used GiB", "refId": "A" }
+      ]
+    }
+  ]
+}

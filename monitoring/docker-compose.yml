@@ -1,0 +1,95 @@
+
+# GPU / NCCL / training-run monitoring stack for the DGX Spark (GB10).
+#
+#   prometheus     :9090  - scrapes everything below every 5s
+#   grafana        :3002  - dashboards (anonymous admin, no login)
+#   dcgm-exporter  :9400  - NVIDIA DCGM GPU telemetry (SM util, power, clocks...)
+#   node-exporter  :9100  - host metrics + textfile collector that picks up the
+#                           NCCL Inspector's .prom dumps from nccl_inspector/textfile
+#   pushgateway    :9091  - receives per-step metrics pushed by train_experiment.py
+#
+# Start:  docker compose up -d
+# Stop:   docker compose down          (data survives in named volumes)
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: mon-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=30d
+      - --web.enable-lifecycle
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: mon-grafana
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      # local single-user box: skip the login screen entirely
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_USERS_DEFAULT_THEME: "dark"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+  dcgm-exporter:
+    image: nvidia/dcgm-exporter:4.5.2-4.8.1-ubuntu22.04
+    container_name: mon-dcgm-exporter
+    restart: unless-stopped
+    gpus: all
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "9400:9400"
+    volumes:
+      - ./dcgm/counters.csv:/etc/dcgm-exporter/counters.csv:ro
+    command: ["-c", "1000", "-f", "/etc/dcgm-exporter/counters.csv"]
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: mon-node-exporter
+    restart: unless-stopped
+    pid: host
+    network_mode: host   # listens on host :9100
+    volumes:
+      - /:/host:ro,rslave
+      - ./nccl_inspector/textfile:/textfile:ro
+    command:
+      # A default collector hangs on this box (fuse portal mounts block statfs),
+      # so run a curated allowlist; textfile is the one that matters (NCCL).
+      - --collector.disable-defaults
+      - --collector.textfile
+      - --collector.textfile.directory=/textfile
+      - --collector.cpu
+      - --collector.meminfo
+      - --collector.loadavg
+      - --collector.stat
+      - --path.rootfs=/host
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: mon-pushgateway
+    restart: unless-stopped
+    ports:
+      - "9091:9091"
+
+volumes:
+  prometheus-data:
+  grafana-data:

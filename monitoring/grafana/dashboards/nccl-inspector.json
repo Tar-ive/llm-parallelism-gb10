@@ -1,0 +1,76 @@
+{
+  "uid": "nccl-inspector",
+  "title": "NCCL Inspector",
+  "tags": ["nccl"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "refresh": "10s",
+  "time": { "from": "now-30m", "to": "now" },
+  "templating": {
+    "list": [
+      {
+        "name": "collective", "label": "Collective", "type": "query",
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "query": "label_values(nccl_bus_bandwidth_gbs, collective)",
+        "includeAll": true, "multi": true, "current": { "text": "All", "value": "$__all" }, "refresh": 2
+      },
+      {
+        "name": "msgsize", "label": "Message size", "type": "query",
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "query": "label_values(nccl_bus_bandwidth_gbs, message_size)",
+        "includeAll": true, "multi": true, "current": { "text": "All", "value": "$__all" }, "refresh": 2
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1, "type": "timeseries", "title": "Collective bus bandwidth (GB/s)",
+      "description": "nccl_bus_bandwidth_gbs from the NCCL Inspector profiler plugin, via node-exporter textfile. busbw normalizes algorithms so it is comparable across collective types and rank counts.",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "GBs", "min": 0, "custom": { "fillOpacity": 12 } }, "overrides": [] },
+      "targets": [
+        { "expr": "nccl_bus_bandwidth_gbs{collective=~\"$collective\", message_size=~\"$msgsize\"}", "legendFormat": "{{collective}} {{message_size}} {{algo_proto}} nranks={{nranks}}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Collective execution time (\u00b5s)",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "\u00b5s", "min": 0, "custom": { "fillOpacity": 12 } }, "overrides": [] },
+      "targets": [
+        { "expr": "nccl_collective_exec_time_microseconds{collective=~\"$collective\", message_size=~\"$msgsize\"}", "legendFormat": "{{collective}} {{message_size}} {{algo_proto}} nranks={{nranks}}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 3, "type": "timeseries", "title": "P2P bus bandwidth (GB/s)",
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "GBs", "min": 0, "custom": { "fillOpacity": 12 } }, "overrides": [] },
+      "targets": [
+        { "expr": "nccl_p2p_bus_bandwidth_gbs", "legendFormat": "{{p2p_operation}} {{message_size}} nranks={{nranks}}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 4, "type": "timeseries", "title": "P2P execution time (\u00b5s)",
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 9 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": { "defaults": { "unit": "\u00b5s", "min": 0, "custom": { "fillOpacity": 12 } }, "overrides": [] },
+      "targets": [
+        { "expr": "nccl_p2p_exec_time_microseconds", "legendFormat": "{{p2p_operation}} {{message_size}} nranks={{nranks}}", "refId": "A" }
+      ]
+    },
+    {
+      "id": 5, "type": "table", "title": "Live communicators (latest sample)",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 18 },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "options": { "showHeader": true },
+      "targets": [
+        { "expr": "nccl_bus_bandwidth_gbs", "format": "table", "instant": true, "refId": "A" }
+      ],
+      "transformations": [
+        { "id": "organize", "options": { "excludeByName": { "Time": true, "__name__": true, "instance": true, "job": true, "version": true, "slurm_job_id": true }, "renameByName": { "Value": "busbw GB/s" } } }
+      ]
+    }
+  ]
+}

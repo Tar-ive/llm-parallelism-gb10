@@ -1,5 +1,25 @@
 # LLM training parallelism on a DGX Spark (1x GB10) — results & interpretation
 
+> **Live monitoring now available**: a Prometheus + Grafana stack in
+> `monitoring/` (see its README) shows GPU telemetry (DCGM), per-step
+> training metrics (this trainer pushes them automatically), and
+> per-collective NCCL metrics via the NCCL Inspector plugin
+> (`nccl_benchmark.py` + `monitoring/nccl_inspector/run_with_inspector.sh`).
+> Grafana: http://localhost:3002. Conceptual walkthrough: `CONCEPTS.md`.
+
+### Live dashboards (Grafana)
+
+| GPU telemetry (DCGM) | Per-step training metrics | NCCL collectives (Inspector) |
+|---|---|---|
+| ![GB10 GPU dashboard](monitoring/screenshots/gb10-gpu.png) | ![LLM training dashboard](monitoring/screenshots/llm-training.png) | ![NCCL Inspector dashboard](monitoring/screenshots/nccl-inspector.png) |
+
+Left → right: is the chip busy/drawing power (DCGM), is training making
+*useful* progress (tokens/s, TFLOPS, MFU, loss — pushed by
+`train_experiment.py`), and is inter-GPU communication healthy (NCCL
+collective/P2P bandwidth + exec time, via the profiler plugin). See
+`monitoring/README.md` for setup and `CONCEPTS.md` for how the three views
+fit together.
+
 Experiment: SFT-train a causal LM (`Qwen/Qwen2.5-0.5B-Instruct`, 494M params)
 on `nvidia/Nemotron-Cascade-2-SFT-Data` — the SFT set behind
 `nvidia/Nemotron-Cascade-2-30B-A3B`, whose FP8 quant is

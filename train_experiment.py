@@ -29,6 +29,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from gpu_monitor import GPUSampler
+from prom_metrics import TrainingMetrics
 
 HERE = Path(__file__).parent
 DATASET = "nvidia/Nemotron-Cascade-2-SFT-Data"
@@ -147,8 +148,15 @@ def main():
     rank = dist.get_rank() if distributed else 0
 
     sampler = None
+    prom = None
     if rank0():
         sampler = GPUSampler(str(results_dir / f"{args.tag}_gpu.csv"), tag=args.tag).start()
+        prom = TrainingMetrics(args.tag, config={
+            "model": args.model, "mode": args.mode, "precision": args.precision,
+            "batch_size": args.batch_size, "seq_len": args.seq_len,
+            "grad_accum": args.grad_accum, "world_size": world,
+            "grad_ckpt": args.gradient_checkpointing, "compile": args.compile,
+        })
         time.sleep(3)  # capture idle baseline (other services share this GPU)
 
     autocast = torch.autocast("cuda", torch.bfloat16, enabled=args.precision == "bf16")
@@ -174,15 +182,24 @@ def main():
         dt = time.perf_counter() - t0
         if step >= 3:
             step_times.append(dt)
-        if rank0() and step % 5 == 0:
+        if rank0():
             tps = tokens_per_step / dt
-            log(f"  step {step:3d} loss={loss.item()*args.grad_accum:.3f} "
-                f"{dt*1000:6.0f}ms {tps:7.0f} tok/s "
-                f"{tps*flops_per_token/1e12:6.2f} TFLOPS ({tps*flops_per_token/1e12/peak*100:4.1f}% peak)")
+            tfl = tps * flops_per_token / 1e12
+            if step >= 3:
+                prom.record_step(
+                    step_ms=dt * 1000, tokens_per_s=tps, tflops=tfl,
+                    mfu_pct=tfl / peak * 100,
+                    loss=loss.item() * args.grad_accum,
+                    mem_gib=torch.cuda.max_memory_allocated() / 2**30)
+            if step % 5 == 0:
+                log(f"  step {step:3d} loss={loss.item()*args.grad_accum:.3f} "
+                    f"{dt*1000:6.0f}ms {tps:7.0f} tok/s "
+                    f"{tfl:6.2f} TFLOPS ({tfl/peak*100:4.1f}% peak)")
 
     if rank0():
         time.sleep(3)
         sampler.stop()
+        prom.finish()
         mean_dt = sum(step_times) / len(step_times)
         tps = tokens_per_step / mean_dt
         tflops = tps * flops_per_token / 1e12
